@@ -19,7 +19,7 @@ from recbole.utils import FeatureSource, InputType
 from recbole_metarec.MetaUtils import EmbeddingTable, GradCollector
 
 
-class GrAdMeta(MetaRecommender):
+class GreatMeta(MetaRecommender):
     """
     This is implement of paper 'Group-wised meta-learning with an adaptive scheduler for user cold-start recommendation'
     """
@@ -27,7 +27,7 @@ class GrAdMeta(MetaRecommender):
     input_type = InputType.POINTWISE
 
     def __init__(self, config, dataset):
-        super(GrAdMeta, self).__init__(config, dataset)
+        super(GreatMeta, self).__init__(config, dataset)
 
         self.source = [FeatureSource.USER, FeatureSource.ITEM]
 
@@ -282,29 +282,29 @@ class UserAdaptingModulator(nn.Module):
         self.all_feature_dim = emdeddingAllDims
         self.encode_layer_dims = config['encoder_layer_dim']
 
-        self.phi_encoder = GrAdMetaSequential(
+        self.phi_encoder = GreatMetaSequential(
             Linear(self.all_feature_dim, self.all_feature_dim),
             # nn.Tanh()
         )
 
         self.predictor_layer_1 = Linear(emdeddingAllDims, self.encode_layer_dims[0])
 
-        self.gama_1_encoder = GrAdMetaSequential(
+        self.gama_1_encoder = GreatMetaSequential(
             Linear(emdeddingAllDims, self.encode_layer_dims[0], bias=False),
             # nn.Tanh()
         )
-        self.beta_1_encoder = GrAdMetaSequential(
+        self.beta_1_encoder = GreatMetaSequential(
             Linear(emdeddingAllDims, self.encode_layer_dims[0], bias=False),
             # nn.Tanh()
         )
 
         self.predictor_layer_2 = Linear(self.encode_layer_dims[0], self.encode_layer_dims[1])
 
-        self.gama_2_encoder = GrAdMetaSequential(
+        self.gama_2_encoder = GreatMetaSequential(
             Linear(emdeddingAllDims, self.encode_layer_dims[1], bias=False),
             # nn.Tanh()
         )
-        self.beta_2_encoder = GrAdMetaSequential(
+        self.beta_2_encoder = GreatMetaSequential(
             Linear(emdeddingAllDims, self.encode_layer_dims[1], bias=False),
             # nn.Tanh()
         )
@@ -349,10 +349,10 @@ class UserAdaptingModulator2(nn.Module):
     def getPrefix(self, modelName, paramDict=None):
         return modelName if paramDict is not None else None
 
-class GrAdMetaSequential(nn.Sequential):
+class GreatMetaSequential(nn.Sequential):
 
     def __init__(self, *args):
-        super(GrAdMetaSequential, self).__init__()
+        super(GreatMetaSequential, self).__init__()
         if len(args) == 1 and isinstance(args[0], OrderedDict):
             for key, module in args[0].items():
                 self.add_module(key, module)
@@ -363,7 +363,7 @@ class GrAdMetaSequential(nn.Sequential):
     def forward(self, input, paramWeightDict=None, paramNamePrefix=None):
         sequentialIdx=0
         for module in self:
-            if isinstance(module, (Linear, GrAdMetaMLPLayers)):
+            if isinstance(module, (Linear, GreatMetaMLPLayers)):
                 input = module.forward(input,
                                        paramWeightDict=paramWeightDict,
                                        paramNamePrefix=str(sequentialIdx) if paramNamePrefix is None
@@ -374,10 +374,10 @@ class GrAdMetaSequential(nn.Sequential):
         return input
 
 
-class GrAdMetaMLPLayers(nn.Module):
+class GreatMetaMLPLayers(nn.Module):
 
     def __init__(self, layers, dropout=0., activation='relu', bn=False, init_method=None):
-        super(GrAdMetaMLPLayers, self).__init__()
+        super(GreatMetaMLPLayers, self).__init__()
         self.layers = layers
         self.dropout = dropout
         self.activation = activation
@@ -396,7 +396,7 @@ class GrAdMetaMLPLayers(nn.Module):
             if activation_func is not None:
                 mlp_modules.append(activation_func)
 
-        self.mlp_layers = GrAdMetaSequential(*mlp_modules)
+        self.mlp_layers = GreatMetaSequential(*mlp_modules)
         if self.init_method is not None:
             self.apply(self.init_weights)
 

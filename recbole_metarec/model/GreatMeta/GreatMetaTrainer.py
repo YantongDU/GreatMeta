@@ -18,10 +18,10 @@ from copy import deepcopy
 import numpy as np
 
 
-class GrAdMetaTrainer(MetaTrainer):
+class GreatMetaTrainer(MetaTrainer):
 
     def __init__(self, config, model):
-        super(GrAdMetaTrainer, self).__init__(config, model)
+        super(GreatMetaTrainer, self).__init__(config, model)
         self.lr = config['grad_meta_args']['lr']
         self.xFields = model.dataset.fields(source=[FeatureSource.USER, FeatureSource.ITEM])
         self.yField = model.RATING

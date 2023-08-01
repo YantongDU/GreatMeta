@@ -43,7 +43,6 @@ param_config = {
     'user_inter_num_interval': [40,200],
     'epochs': 200,
     'eval_args': {'group_by':'task', 'order':'RO', 'split': {'RS': [0.7,0.1,0.2]}, 'mode': 'labeled'},
-    # 'meta_args': {'support_num': 20, 'query_num': 'none'},
     'meta_args': {'support_num': 'none', 'query_num': 10},
     'train_batch_size': 32,
 
@@ -57,26 +56,14 @@ param_config = {
 # datasetName = 'ml-1m'
 datasetName = 'ml-100k'
 
-# datasetName = 'ml-100k-CTR'
-
-# modelName = 'FOMeLU'
-# modelName = 'MAMO'
-# modelName = 'TaskAdMeta'
-# modelName = 'GrAdMeta-0504-bak'
-# modelName = 'TaNP'
-# modelName = 'NLBA'
-# modelNames = ['GrAdMeta']
-# modelNames = ['FOMeLU']
-# modelNames = ['GrAdMeta']
-# modelNames = ['GrAdMeta']
-modelNames = ['GrAdMeta']
+modelNames = ['GreatMeta']
 # modelNames = ['FOMeLU']
 # modelNames = ['MAMO']
 # modelNames = ['MeLU']
 
 note = 'baseline,调整s/q-'
 # note = 'baseline'
-# note = 'baseline- GrAdMeta 不对步长正则化'
+# note = 'baseline- GreatMeta 不对步长正则化'
 
 for modelName in modelNames:
     config, test_result = metaQuickStart(modelName, datasetName, param_config)
